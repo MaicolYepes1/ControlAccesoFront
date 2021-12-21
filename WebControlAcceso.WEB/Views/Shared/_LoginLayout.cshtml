@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+@*<partial name="_CopyrightHeader" />*@
+<html lang="en">
+<head>
+    @*<partial name="_Head" />*@
+    @RenderSection("HeadBlock", required: false)
+</head>
+<body style="background: #136926;">
+    <partial name="_ScriptsLoadingSaving" />
+    <main role="main">
+        @if (ViewBag.PreemptiveClass?.Length > 0)
+        {
+        }
+        else
+        {@*<partial name="_PageBreadcrumb" />
+    <div class="subheader"><partial name="_PageHeading" />@RenderSection("Subheaderblock", required: false)</div>*@}
+        @RenderBody()
+    </main>
+    @RenderSection("ScriptsBlock", required: false)
+</body>
+</html>

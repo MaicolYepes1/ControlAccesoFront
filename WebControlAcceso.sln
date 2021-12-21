@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebControlAcceso.SERVICES", "WebControlAcceso.SERVICES\WebControlAcceso.SERVICES.csproj", "{3EF1DAF0-B652-488E-83F5-73595387676A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebControlAcceso.DEPENDENCY", "WebControlAcceso.DEPENDENCY\WebControlAcceso.DEPENDENCY.csproj", "{20A150CE-AFD1-4B15-9EA9-A0CD4E043E17}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebControlAcceso.MODELS", "WebControlAcceso.MODELS\WebControlAcceso.MODELS.csproj", "{03343F45-A1B6-4595-BC17-32388C334CB9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebControlAcceso.TEST", "WebControlAcceso.TEST\WebControlAcceso.TEST.csproj", "{47E7EF81-CCC3-4689-95B3-9EED4C898502}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebControlAcceso.PROVIDERS", "WebControlAcceso.PROVIDERS\WebControlAcceso.PROVIDERS.csproj", "{EE0DBF2D-EAC7-42BD-97F2-88A8594F9C06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebControlAcceso.WEB", "WebControlAcceso.WEB\WebControlAcceso.WEB.csproj", "{D5D572CE-1EC9-4DC8-9360-FC794753B3A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3EF1DAF0-B652-488E-83F5-73595387676A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF1DAF0-B652-488E-83F5-73595387676A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF1DAF0-B652-488E-83F5-73595387676A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF1DAF0-B652-488E-83F5-73595387676A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20A150CE-AFD1-4B15-9EA9-A0CD4E043E17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20A150CE-AFD1-4B15-9EA9-A0CD4E043E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20A150CE-AFD1-4B15-9EA9-A0CD4E043E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20A150CE-AFD1-4B15-9EA9-A0CD4E043E17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03343F45-A1B6-4595-BC17-32388C334CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03343F45-A1B6-4595-BC17-32388C334CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03343F45-A1B6-4595-BC17-32388C334CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03343F45-A1B6-4595-BC17-32388C334CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47E7EF81-CCC3-4689-95B3-9EED4C898502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47E7EF81-CCC3-4689-95B3-9EED4C898502}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47E7EF81-CCC3-4689-95B3-9EED4C898502}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47E7EF81-CCC3-4689-95B3-9EED4C898502}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE0DBF2D-EAC7-42BD-97F2-88A8594F9C06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE0DBF2D-EAC7-42BD-97F2-88A8594F9C06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE0DBF2D-EAC7-42BD-97F2-88A8594F9C06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE0DBF2D-EAC7-42BD-97F2-88A8594F9C06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D572CE-1EC9-4DC8-9360-FC794753B3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D572CE-1EC9-4DC8-9360-FC794753B3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D572CE-1EC9-4DC8-9360-FC794753B3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D572CE-1EC9-4DC8-9360-FC794753B3A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {238FD16E-897D-45F2-814F-92171AF898B2}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://dev.azure.com/agilsolutions
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WebControlAcceso.DEPENDENCY\\WebControlAcceso.DEPENDENCY.csproj
+		SccProjectName1 = WebControlAcceso.DEPENDENCY
+		SccLocalPath1 = WebControlAcceso.DEPENDENCY
+		SccProjectUniqueName2 = WebControlAcceso.MODELS\\WebControlAcceso.MODELS.csproj
+		SccProjectName2 = WebControlAcceso.MODELS
+		SccLocalPath2 = WebControlAcceso.MODELS
+		SccProjectUniqueName3 = WebControlAcceso.PROVIDERS\\WebControlAcceso.PROVIDERS.csproj
+		SccProjectName3 = WebControlAcceso.PROVIDERS
+		SccLocalPath3 = WebControlAcceso.PROVIDERS
+		SccProjectUniqueName4 = WebControlAcceso.SERVICES\\WebControlAcceso.SERVICES.csproj
+		SccProjectName4 = WebControlAcceso.SERVICES
+		SccLocalPath4 = WebControlAcceso.SERVICES
+		SccProjectUniqueName5 = WebControlAcceso.TEST\\WebControlAcceso.TEST.csproj
+		SccProjectName5 = WebControlAcceso.TEST
+		SccLocalPath5 = WebControlAcceso.TEST
+		SccProjectUniqueName6 = WebControlAcceso.WEB\\WebControlAcceso.WEB.csproj
+		SccProjectName6 = WebControlAcceso.WEB
+		SccLocalPath6 = WebControlAcceso.WEB
+	EndGlobalSection
+EndGlobal

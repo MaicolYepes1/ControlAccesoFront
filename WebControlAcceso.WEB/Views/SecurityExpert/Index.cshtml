@@ -1,0 +1,205 @@
+﻿@model WebControlAcceso.MODELS.Dtos.VisitanteDto
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["PageName"] = "SecurityExpert_index";
+}
+@section HeadBlock
+{
+    <link rel="stylesheet" media="screen, print" href="~/css/notifications/toastr/toastr.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/notifications/sweetalert2/sweetalert2.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/datagrid/datatables/datatables.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/theme-demo.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/formplugins/bootstrap-datepicker/bootstrap-datepicker.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/fa-brands.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/fa-brands.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/formplugins/select2/select2.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/SecurityExpert/SecurityExpert.css">
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div id="panel-1" class="panel">
+            <div class="panel-hdr">
+
+                <div class="panel-toolbar">
+                </div>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <div class="tab-content pt-4">
+                        <div class="tab-pane fade show active" id="tab_default-1" role="tabpanel">
+
+                            <div style="padding-bottom: 20px;">
+                                <select class="select2 form-control w-100" id="selectPeople" onchange="change()">
+                                    <option>Buscar...</option>
+                                </select>
+                            </div>
+
+                            <div class="row">
+                                <div class="panel-container show col-12">
+                                    <div class="panel-content">
+                                        <ul class="nav nav-tabs nav-tabs-clean" role="tablist">
+                                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-infoUsser" role="tab">Información Usuario</i></a></li>
+                                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-tarjets" role="tab">Información Tarjetas</i></a></li>
+                                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-accessLevels" role="tab">Niveles de Acceso</i></a></li>
+                                        </ul>
+
+                                        <div class="tab-content p-3">
+                                            <div class="tab-pane fade show active" id="tab-infoUsser" role="tabpanel" aria-labelledby="tab-infoUsser" style="padding-top: 10px;">
+                                                <form id="infoSecurity" class="needs-validation" method="post" novalidate>
+                                                    <div class="row">
+                                                        <div class="col-xl-12">
+                                                            <div class="form-row">
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label class="form-label" for="RecordGroup">Sites</label>
+                                                                    <select class="form-control" id="Sites" onchange="onChange()" name="Sites" required="">
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label class="form-label" for="nombres">Nombres</label>
+                                                                    <input type="text" id="nombresVis" class="form-control" onchange="completeNames(this.value)" placeholder="Nombres" required>
+                                                                </div>
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label class="form-label" for="example-palaceholder">Apellidos</label>
+                                                                    <input type="text" id="apellidosVis" class="form-control" onchange="completeNames(this.value)" placeholder="Apellidos">
+                                                                </div>
+                                                                <div class="col-md-8 mb-3">
+                                                                    <label class="form-label" for="example-palaceholder">Nombres y Apellidos</label>
+                                                                    <input type="text" id="nombresYapellidos" class="form-control" disabled style="background: darkgray;">
+                                                                </div>
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label class="form-label" for="RecordGroup">Record Groups</label>
+                                                                    <select class="form-control" id="recordGroup" required="">
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="padding: 10px;">
+                                                        <div class="col-xl-12">
+                                                            <a>PERSONALIZADOS</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xl-12">
+                                                            <div class="form-row" id="customFields">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab-tarjets" role="tabpanel" aria-labelledby="tab-tarjets" style="padding-top: 10px;">
+                                                <button class="btn btn-primary ml-auto" onclick="addTarjet();">Agregar tajeta</button>
+                                                <div id="tarjets">
+                                                    <div class="row" style="padding-top: 20px;">
+                                                        <div class="col-xl-2">
+                                                            <div class="col-md-12 mb-3" style="text-align: end; padding-top: 7px;">
+                                                                <label class="form-label">Fecha Inicial</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3">
+                                                            <div class="col-md-12 mb-3">
+                                                                <input class="form-control" id="initdate" type="date" name="startDate" disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="custom-control custom-checkbox col-xl-1" style="text-align: center; padding-top: 7px;">
+                                                            <input type="checkbox" class="custom-control-input" id="initDateCheck" name="Init" onclick="checkInitChange()"><label class="custom-control-label" for="initDateCheck">Inicio</label>
+                                                        </div>
+                                                        <div class="col-xl-1">
+                                                            <div class="custom-control custom-checkbox" style="text-align: center; padding-top: 7px;">
+                                                                <input type="checkbox" class="custom-control-input" id="endDateCheck" name="End" onclick="checkEndChange()"><label class="custom-control-label" for="endDateCheck">Final</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-1">
+                                                            <div class="col-md-12 mb-3" style="text-align: end; padding-top: 7px;">
+                                                                <label class="form-label">Fecha Final</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3">
+                                                            <div class="col-md-12 mb-3">
+                                                                <input class="form-control" id="enddate" type="date" name="expiritDate" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab-accessLevels" role="tabpanel" aria-labelledby="tab-accessLevels" style="padding-top: 10px;">
+                                                <button class="btn btn-primary ml-auto waves-effect waves-themed" id="tab-accessLevels" data-toggle="modal" data-target="#myModal">Agregar Nivel de Acceso</button>
+                                                <div id="levelAccesOn">
+
+                                                </div>
+                                                <div id="LevelAccessOff">
+
+                                                </div>
+                                            </div>
+                                            <div class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center" style="padding-top: 10px;">
+                                                <button class="btn btn-primary ml-auto" type="submit" onclick="addSecurity()" id="saveButton" style="display: block;">Guardar</button>
+                                                <button class="btn btn-primary ml-auto" id="updateButton" type="submit" onclick="updateSecurity()" style="display: none;">Actualizar</button>
+                                            </div>
+                                            <script>
+                                                // Example starter JavaScript for disabling form submissions if there are invalid fields
+                                                (function () {
+                                                    'use strict';
+                                                    window.addEventListener('load', function () {
+                                                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                                                        var forms = document.getElementsByClassName('needs-validation');
+                                                        // Loop over them and prevent submission
+                                                        var validation = Array.prototype.filter.call(forms, function (form) {
+                                                            form.addEventListener('submit', function (event) {
+                                                                if (form.checkValidity() === false) {
+                                                                    event.preventDefault();
+                                                                    event.stopPropagation();
+                                                                }
+                                                                form.classList.add('was-validated');
+                                                            }, false);
+                                                        });
+                                                    }, false);
+                                                })();</script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade modal-ku" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content col-xl-12">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalLvl">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="addHtmlLvlAccess();" data-dismiss="modal">Agregar nivel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ScriptsBlock {
+    <script src="~/js/SecurityExpert/SecurityExpert.js"></script>
+    <script src="~/js/datagrid/datatables/datatables.bundle.js"></script>
+    <script src="~/js/notifications/toastr/toastr.js"></script>
+    <script src="~/js/formplugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/js/notifications/sweetalert2/sweetalert2.bundle.js"></script>
+    <script src="~/js/formplugins/select2/select2.bundle.js"></script>
+    <script type="text/javascript">
+       var Modelo = @Html.Raw(JsonConvert.SerializeObject(Model));
+        if (Modelo != null) {
+            document.getElementById("nombresVis").innerHTML = Model.Nombres;
+        }
+    </script>
+}

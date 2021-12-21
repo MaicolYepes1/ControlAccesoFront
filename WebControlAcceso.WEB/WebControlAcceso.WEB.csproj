@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="Areas\Authorization\Pages\Roles.cshtml" />
+    <None Include="Areas\Authorization\Pages\Users.cshtml" />
+    <None Include="Areas\Authorization\Pages\_ViewImports.cshtml" />
+    <None Include="Areas\Authorization\Pages\_ViewStart.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\ForgotPassword.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\ForgotPasswordConfirmation.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\Lockout.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\Login.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\Logout.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\Register.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\ResetPassword.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\ResetPasswordConfirmation.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\_ViewImports.cshtml" />
+    <None Include="Areas\Identity\Pages\_Layout.cshtml" />
+    <None Include="Areas\Identity\Pages\_Logo.cshtml" />
+    <None Include="Areas\Identity\Pages\_PageFooter.cshtml" />
+    <None Include="Areas\Identity\Pages\_PageHeader.cshtml" />
+    <None Include="Areas\Identity\Pages\_ViewImports.cshtml" />
+    <None Include="Areas\Identity\Pages\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="FreeSpire.PDF" Version="7.2.0" />
+    <PackageReference Include="jQuery.Validation" Version="1.19.3" />
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.23.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Syncfusion.Pdf.Net.Core" Version="19.1.0.58" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebControlAcceso.DEPENDENCY\WebControlAcceso.DEPENDENCY.csproj" />
+    <ProjectReference Include="..\WebControlAcceso.MODELS\WebControlAcceso.MODELS.csproj" />
+    <ProjectReference Include="..\WebControlAcceso.SERVICES\WebControlAcceso.SERVICES.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\variables\WacomVariables.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

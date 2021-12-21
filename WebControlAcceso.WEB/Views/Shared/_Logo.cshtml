@@ -1,0 +1,15 @@
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var logo = Context.Session.GetString("Icon");
+}
+<div class="page-logo">
+    <a href="Visitantes/Index" class="page-logo-link press-scale-down d-flex align-items-center position-relative">
+        <img src="@logo" alt="@Settings.AppFlavor" aria-roledescription="logo" class="rounded-circle profile-image">
+        <span class="page-logo-text mr-1">@Settings.AppName</span>
+        <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2">@Settings.AppFlavorSubscript</span>
+        @if (ViewBag.AppShortcutModal?.Length > 0)
+        {
+            <i class="@(Settings.Theme.IconPrefix) fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>}
+    </a>
+</div>

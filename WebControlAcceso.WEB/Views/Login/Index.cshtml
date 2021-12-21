@@ -1,0 +1,55 @@
+﻿@model WebControlAcceso.MODELS.Loads.LoginLoad
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+@section HeadBlock {
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="~/css/Login/Login.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- Include the above in your HEAD tag -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+}
+
+<div class="main">
+    <div class="container">
+        <center>
+            <div class="middle">
+                <div id="login">
+                    <form asp-action="Index" method="post">
+                        <fieldset class="clearfix">
+                            <p>
+                                <span class="fa fa-user"></span>
+                                <input type="text" Placeholder="Usuario" required asp-for="Usser" autocomplete="off" class="form-control">
+                                <span asp-validation-for="@Model.Usser" class="text-danger"></span>
+                            </p> <!-- JS because of IE support; better: placeholder="Username" -->
+                            <p>
+                                <span class="fa fa-lock"></span>
+                                <input type="password" Placeholder="Contraseña" required asp-for="Pass" class="form-control" autocomplete="off">
+                                <span asp-validation-for="@Model.Pass" class="text-danger"></span>
+                            </p> <!-- JS because of IE support; better: placeholder="Password" -->
+                            <div>
+                                @Html.ValidationSummary(false, "", new { @class = "alert-danger" })
+                                <span style="width:50%; text-align:right;  display: inline-block;"><input type="submit" value="Iniciar" onclick="getIcons()"></span>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div> <!-- end login -->
+                @{
+                    var logo = Context.Session.GetString("Logo");
+                }
+                <div class="logo">
+                    <img id="logoImg" src="@logo" style="width: 480px; height: 180px;" />
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </center>
+    </div>
+</div>

@@ -1,0 +1,2424 @@
+﻿@model IEnumerable<WebControlAcceso.MODELS.Dtos.VisitanteDto>
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["PageName"] = "Visitantes_index";
+}
+@section HeadBlock
+{
+    <link rel="stylesheet" media="screen, print" href="~/css/notifications/toastr/toastr.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/notifications/sweetalert2/sweetalert2.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/datagrid/datatables/datatables.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/theme-demo.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/formplugins/bootstrap-datepicker/bootstrap-datepicker.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/fa-regular.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/Asignacion/Asignacion.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/fa-solid.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/fa-brands.css">
+    <link rel="stylesheet" media="screen, print" href="~/css/formplugins/select2/select2.bundle.css">
+    <script src="~/js/Wacom/base64.js"></script>
+    <script src="~/js/Wacom/SigCaptX-Globals.js"></script>
+    <script src="~/js/Wacom/SigCaptX-SessionControl.js"></script>
+    <script src="~/js/Wacom/SigCaptX-Utils.js"></script>
+    <script src="~/js/Wacom/SigCaptX-Wizard-Main.js"></script>
+    <script src="~/js/Wacom/SigCaptX-Wizard-PadDefs.js"></script>
+    <script src="~/js/Wacom/wgssSigCaptX.js"></script>
+    <script src="~/js/Wacom/jquery-3.2.1.min.js"></script>
+    <script src="~/js/Wacom/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <style>
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            background: #ff0000;
+        }
+
+        .doe {
+            height: 15px;
+            width: 15px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            background: #008000;
+        }
+
+        .button {
+            background-color: #136926;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+
+        #clock {
+            background-color: #333;
+            font-family: sans-serif;
+            font-size: 30px;
+            text-shadow: 0px 0px 1px #fff;
+            color: #fff;
+        }
+
+            #clock span {
+                color: #888;
+                text-shadow: 0px 0px 1px #333;
+                font-size: 20px;
+                position: relative;
+            }
+
+        #date {
+            letter-spacing: 10px;
+            font-size: 14px;
+            font-family: arial,sans-serif;
+            color: #fff;
+            background-color: #333;
+        }
+
+        html, body {
+            height: 100%;
+            background-color: #000;
+        }
+
+        .contenedor {
+            height: 49%;
+            background-color: #6A737C;
+            margin: 1% 1%;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div id="panel-1" class="panel">
+            <div class="panel-container show">
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <div class="row" style="text-align: center;">
+                        <div class="col-xl-3" style=" width: 180px;">
+                            <div class="p-3 bg-fusion-300 rounded overflow-hidden position-relative text-white mb-g" data-toggle="modal" data-target="#infoEnterCont">
+                                <div class="fc-center">
+                                    <h3 id="countContratist" style="text-align:center" class="display-4 d-block l-h-n m-0 fw-500">
+                                        0
+                                    </h3>
+                                    <h5 style="text-align:center" class="fw-500">Contratistas</h5>
+                                </div>
+                                <i class="fal fa-user-hard-hat position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
+                            </div>
+                        </div>
+                        <div class="col-xl-3" style=" width: 180px;">
+                            <div class="p-3 bg-fusion-400 rounded overflow-hidden position-relative text-white mb-g" data-toggle="modal" data-target="#infoEnter">
+                                <div class="fc-center">
+                                    <h3 id="countVisitors" style="text-align:center" class="display-4 d-block l-h-n m-0 fw-500">
+                                        0
+                                    </h3>
+                                    <h5 style="text-align:center" class="fw-500">Visitantes</h5>
+                                </div>
+                                <i class="fal fa-user-clock position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
+                            </div>
+                        </div>
+                        <div class="col-xl-3" style=" width: 180px;">
+                            <div class="p-3 bg-fusion-500 rounded overflow-hidden position-relative text-white mb-g" data-toggle="modal" data-target="#infoEnterProv">
+                                <div class="fc-center">
+                                    <h3 id="countProviders" style="text-align:center" class="display-4 d-block l-h-n m-0 fw-500">
+                                        0
+                                    </h3>
+                                    <h5 style="text-align:center" class="fw-500">Proveedores</h5>
+                                </div>
+                                <i class="fal fa-user-minus position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
+                            </div>
+                        </div>
+                        <div class="col-xl-3" style=" width: 180px;">
+                            <div class="p-3 bg-fusion-600 rounded overflow-hidden position-relative text-white mb-g">
+                                <div class="fc-center">
+                                    <h3 id="countTotal" style="text-align:center" class="display-4 d-block l-h-n m-0 fw-500">
+                                        0
+                                    </h3>
+                                    <h5 style="text-align:center" class="fw-500">C. Total</h5>
+                                </div>
+                                <i class="fal fa-users-class position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="frame-wrap col-md-6">
+                            <button data-toggle="modal" data-target="#default-example-modal-lg" onclick="limpiarFormulario()" class="button" type="button">
+                                AGREGAR
+                            </button>
+                            <button data-toggle="modal" data-target="#default-example-modal-lg" id="editVissi" onclick="editVisitidor()" class="button" type="button" disabled>
+                                EDITAR
+                            </button>
+                            <button onclick="addSecurity()" id="addSe" class="button" type="button" disabled>
+                                AGREGAR SE.
+                            </button>
+                            <button onclick="eliminar()" class="button" id="deleteEvent" disabled>
+                                ELIMINAR
+                            </button>
+                            <button type="button" class="button" data-action="toggle" data-class="d-flex" data-target="#panel-compose" data-focus="message-to">
+                                ENV. INV.
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-8"></div>
+                                <div id="clockdate" class="row col-md-4">
+                                    <div class="clockdate-wrapper">
+                                        <div id="date"></div>
+                                        <div id="clock" style="text-align: center;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="tab-content pt-4">
+                        <div class="tab-pane fade show active" id="tab_default-1" role="tabpanel">
+                            <div style="margin-bottom: 5px;">
+                                <div class="input-group input-group-lg">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-lg">Filtrar</span>
+                                    </div>
+                                    <input type="text"
+                                           oninput="onQuickFilterChanged()"
+                                           id="quickFilter"
+                                           class="form-control"
+                                           aria-label="Large"
+                                           aria-describedby="inputGroup-sizing-sm" />
+                                </div>
+                            </div>
+                            <div id="myGrid" style="height: 300px;" class="ag-theme-alpine"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="img" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img style="width:260px; height:230px;" id="imgage" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="infoEnter" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id="gridVisEnter" style="height: 300px;" class="ag-theme-alpine"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="infoEnterCont" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id="gridContEnter" style="height: 300px;" class="ag-theme-alpine"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="infoEnterProv" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id="gridProvEnter" style="height: 300px;" class="ag-theme-alpine"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DivVis" class="panel" style="display:none;">
+    <div class="panel-container show">
+        <div class="panel-content">
+            <div class="tab-content pt-4">
+                <form id="infoCardVis">
+                    <div class="row" id="js-contacts">
+                        <div class="row">
+                            <div class="col-xl-2" style="padding:0;">
+                                <a data-toggle="modal" href="#img">
+                                    <img style="width:260px; height:230px;" id="fotoVis" alt="image">
+                                    <br />
+                                    <img style="width:260px; height:230px;" id="firmaVis" alt="firma">
+                                </a>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Editar</a>
+                                </div>
+                                <div>
+                                    <label>Nombres y Apellidos: </label>
+                                    <span id="names" name="names"></span>
+                                </div>
+                                <div>
+                                    <label>Empresa: </label>
+                                    <span id="company" name="company"></span>
+                                </div>
+                                <div>
+                                    <label>Profesión: </label>
+                                    <span id="profesionVis" name="profesionVis"></span>
+                                </div>
+                                <div>
+                                    <label>Identificación: </label>
+                                    <span id="idV"></span>
+                                </div>
+                                <div>
+                                    <label>Tipo Documento: </label>
+                                    <span id="typeDoco"></span>
+                                </div>
+                                <div>
+                                    <label>Tipo Visitante: </label>
+                                    <span id="typeVi"></span>
+                                </div>
+                                <div>
+                                    <label>RH: </label>
+                                    <span id="rhh"></span>
+                                </div>
+                                <div>
+                                    <label>Género:  </label>
+                                    <span id="gen"></span>
+                                </div>
+                                <div>
+                                    <label>Correo Electrónico: </label>
+                                    <span id="email"></span>
+                                </div>
+                                <div>
+                                    <label>Fecha Expedición Doc: </label>
+                                    <span id="fExpedicionDoc"></span>
+                                </div>
+                                <div>
+                                    <label>Detalle: </label>
+                                    <span id="detalleVis"></span>
+                                </div>
+                                <div>
+                                    <label>Empleado Responsable: </label>
+                                    <span id="empleadoRespon"></span>
+                                </div>
+                            </div>
+                            <div class="panel-container show col-xl-4">
+                                <div class="panel-content">
+                                    <ul class="nav nav-tabs nav-tabs-clean" role="tablist">
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-vehiculosInfo" role="tab">Vehiculos</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-arlInfo" role="tab">Arl</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-equiposInfo" role="tab">Equipos</a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-incidentesInfo" role="tab">Incidentes</a></li>
+                                    </ul>
+                                    <div class="tab-content p-3">
+                                        <div class="tab-pane fade" id="tab-vehiculosInfo" role="tabpanel" aria-labelledby="tab-vehiculos">
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <div style="padding-bottom: 10px;">
+                                                        <button data-toggle="modal" data-target="#vehicleModal" onclick="limpiarFormulario()" class="btn btn-primary waves-effect waves-themed" type="button">
+                                                            AGREGAR
+                                                        </button>
+                                                    </div>
+                                                    <div id="gridVehiculos" style="height: 300px;" class="ag-theme-alpine"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab-arlInfo" role="tabpanel" aria-labelledby="tab-arl">
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <div style="padding-bottom: 10px;">
+                                                        <button data-toggle="modal" data-target="#arlModal" onclick="limpiarFormulario()" class="btn btn-primary waves-effect waves-themed" type="button">
+                                                            AGREGAR
+                                                        </button>
+                                                    </div>
+                                                    <div id="gridArl" style="height: 300px;" class="ag-theme-alpine"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab-equiposInfo" role="tabpanel" aria-labelledby="tab-equipos">
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <div style="padding-bottom: 10px;">
+                                                        <button data-toggle="modal" data-target="#deviceModal" onclick="limpiarFormulario()" class="btn btn-primary waves-effect waves-themed" type="button">
+                                                            AGREGAR
+                                                        </button>
+                                                    </div>
+                                                    <div id="gridEquipos" style="height: 300px;" class="ag-theme-alpine"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="tab-incidentesInfo" role="tabpanel" aria-labelledby="tab-incidentes">
+                                            <div class="row">
+                                                <div class="col-xl-12">
+                                                    <div style="padding-bottom: 10px;">
+                                                        <button data-toggle="modal" data-target="#incidentsModal" onclick="limpiarFormulario()" class="btn btn-primary waves-effect waves-themed" type="button">
+                                                            AGREGAR
+                                                        </button>
+                                                    </div>
+                                                    <div id="gridIncidentes" style="height: 300px;" class="ag-theme-alpine"></div>
+                                                    <div style="padding: 5px;"><button type="submit" class="btn btn-primary" onclick="saveIncEdit()">Guardar</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2" style="padding:0;">
+                                <button class="btn btn-info" type="button" onclick="accessState(0)">Salida</button>
+                                <button class="btn btn-info" type="button" onclick="accessState(1)">Entrada</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-fullscreen example-modal-fullscreen" id="mdlPreview" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content h-100 border-0 shadow-0 bg-fusion-800">
+            <button type="button" style="margin-top:500px !important" class="close p-sm-2 p-md-4 text-white fs-xxl position-absolute pos-right mr-sm-2 mt-sm-1 z-index-space" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><i class="fal fa-times"></i></span>
+            </button>
+            <div class="modal-body p-0">
+                <div class="col-lg-12">
+                    <div class="row" style="margin-top:500px;">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <canvas id="canvas-pdf"></canvas>
+                                </div>
+                                <div class="col-md-12">
+                                    <button id="prev" type="button">Anterior</button>
+
+                                    &nbsp; &nbsp;<span>Page: <span id="page_num"></span> / <span id="page_count"></span></span>
+                                    <button id="next" type="button">Siguiente</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="addVisitorForm" class="needs-validation" novalidate method="post">
+    <div class="modal" id="default-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar/Actualizar Visitante</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="@(Settings.Theme.IconPrefix) fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="panel-container show col-12">
+                            <div class="panel-content">
+                                <ul class="nav nav-tabs nav-tabs-clean" role="tablist">
+                                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-visitante" role="tab">Visitante</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-imgs" role="tab">Fotos</a></li>
+                                </ul>
+                                <div class="tab-content p-3">
+                                    <div class="tab-pane fade show active" id="tab-visitante" role="tabpanel" aria-labelledby="tab-visitante">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="idVisitor">Documento<span class="text-danger">*</span></label>
+                                                    <input type="text" id="idVisitor" name="Identificacion" class="form-control" placeholder="Documento" required>
+                                                    <div class="valid-tooltip">
+                                                        Looks good!
+                                                    </div>
+                                                    <div class="invalid-tooltip">
+                                                        Por favor digite el documento.
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="namesVisitor">Nombres</label>
+                                                    <input type="text" id="nombresVisitante" name="Nombres" class="form-control" placeholder="Nombres">
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="lastNamesVisitor">Apellidos</label>
+                                                    <input type="text" id="lastNamesVisitor" name="Apellidos" class="form-control" placeholder="Apellidos">
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="dateExpeditionVisitor">Fecha Expedición</label>
+                                                    <input class="form-control" id="dateExpeditionVisitor" type="date" name="FExpedicionDoc">
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="DocType">Tipo Documento</label>
+                                                    <select class="form-control" id="TipoDoc" name="TipoDoc">
+                                                        <option value="CC">CC</option>
+                                                        <option value="CE">CE</option>
+                                                        <option value="PASAPORTE">PASAPORTE</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="rhVisitor">Rh</label>
+                                                    <input type="text" id="rhVisitor" name="Rh" class="form-control" placeholder="Rh">
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="professionVisitor">Profesión</label>
+                                                    <input type="text" id="professionVisitor" name="Profesion" class="form-control" placeholder="Profesión">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="visitorType">Tipo Visitante</label>
+                                                    <select class="form-control" id="visitorType" name="TipoVisitante">
+                                                        <option value="PROVEEDOR">PROVEEDOR</option>
+                                                        <option value="VISITANTE">VISITANTE</option>
+                                                        <option value="CONTRATISTA">CONTRATISTA</option>
+                                                        <option value="EMPLEADO">EMPLEADO</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="companyVisitor">Empresa</label>
+                                                    <input type="text" id="companyVisitor" name="Empresa" class="form-control" placeholder="Empresa">
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="accessStateVisitor">Estado Acceso<span class="text-danger">*</span></label>
+                                                    <select class="form-control" id="estadoAcceso" required>
+                                                        <option value="Dentro">Dentro</option>
+                                                        <option value="Fuera">Fuera</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="employeeVisitor">Empleado Responsable</label>
+                                                    <input type="text" id="employeeVisitor" name="Responsable" class="form-control" placeholder="Responsable">
+                                                </div>
+                                                @*<div class="col-md-12 mb-3">
+                                                        <label class="form-label" for="employeeVisitor">Empleado Responsable</label>
+                                                        <select class="form-control" id="employeeVisitor" name="employeeVisitor">
+                                                            <option value="true">Desarrollo 2</option>
+                                                            <option value="false">Desarrollo 1</option>
+                                                        </select>
+                                                    </div>*@
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="genderVisitor">Género</label>
+                                                    <select class="form-control" id="genderVisitor" name="Genero">
+                                                        <option value="MASCULINO">MASCULINO</option>
+                                                        <option value="FEMENINO">FEMENINO</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="emailVisitor">Correo</label>
+                                                    <input type="email" id="emailVisitor" name="Correo" class="form-control" placeholder="Correo">
+                                                </div>
+                                                <div class="col-md-12 mb-3">
+                                                    <label class="form-label" for="detailVisitor">Detalle</label>
+                                                    <input type="text" id="detailVisitor" name="Detalle" class="form-control" placeholder="Detalle">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab-imgs" role="tabpanel" aria-labelledby="tab-imgs">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="contentarea">
+                                                        <div class="camera" id="camera">
+                                                            <video id="video">Video stream not available.</video>
+                                                        </div>
+                                                        <div id="take"><button id="startbutton">Tomar Foto!</button></div>
+                                                        <canvas id="canvas"></canvas>
+                                                        <div class="output">
+                                                            <img id="photo" class="form-control" name="Foto" alt="The screen capture will appear in this box.">
+                                                        </div>
+                                                        <div id="new"><button id="nueva">Nueva Foto</button></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="row" id="btnStartStopWizardContent">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label>Formulario de firma</label>
+                                                                <div id="btnStartStopWizard">
+                                                                    <div id="imageBox"
+                                                                         onClick="Initialize()"
+                                                                         class="boxed"
+                                                                         style="height: 35mm; width: 60mm; border: 1px solid #d3d3d3;"
+                                                                         rel="tooltip"
+                                                                         data-placement="top"
+                                                                         data-original-title="<em> ¡Presiona aqui! </em> para cargar el formulario de firma!"
+                                                                         data-html="true">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-8">
+                                                            <textarea rows="4" id="txtDisplay" style="color: #0267a9; display: none;"></textarea>
+                                                        </div>
+
+                                                        <input type="checkbox" id="chkDisplayWizard" style="display: none;" checked="checked" />
+                                                        <input type="checkbox" id="chkLargeCheckbox" style="display: none;" />
+                                                        <input type="checkbox" id="chkSigText" style="display: none;" />
+                                                        <input type="radio" name="buttontype" id="standard" style="display: none;" value="standard" />
+                                                        <input type="radio" name="buttontype" id="utf8" style="display: none;" value="utf8" />
+                                                        <input type="radio" name="buttontype" id="local" style="display: none;" value="local">
+                                                        <input type="radio" name="buttontype" id="remote" value="remote" style="display: none;" checked="checked" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" onclick="addVisitor()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    var validateForm = false;
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        validateForm = true;
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false
+        );
+    })();
+</script>
+
+<partial name="_Compose" />
+
+<form id="formDevices" class="needs-validation" novalidate method="post">
+    <div class="modal" id="deviceModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Equipos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="@(Settings.Theme.IconPrefix) fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="modelEq">Modelo</label>
+                                <input type="text" id="modelEq" name="modelEq" class="form-control" placeholder="Modelo">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="brandEq">Marca</label>
+                                <input type="text" id="brandEq" name="brandEq" class="form-control" placeholder="Marca">
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="serialEq">Serial</label>
+                                <input type="text" id="serialEq" name="serialEq" class="form-control" placeholder="Serial">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="colourEq">Color</label>
+                                <input type="text" id="colourEq" name="colourEq" class="form-control" placeholder="Color">
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="detailsEq">Detalles</label>
+                                <textarea class="form-control" id="detailsEq" name="detailsEq" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" onclick="addDevices();">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form id="formArl" class="needs-validation" novalidate method="post">
+    <div class="modal" id="arlModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Arl</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="@(Settings.Theme.IconPrefix) fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="dateExpArl">Fecha de Expiración</label>
+                                <input class="form-control" id="dateExpArl" type="date" name="dateExpArl" value="2023-07-23">
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="detailsArl">Detalles</label>
+                                <textarea class="form-control" name="detailsArl" id="detailsArl" rows="5"></textarea>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">File (Browser)</label>
+                                <div class="custom-file">
+                                    @*<input type="file" class="descriptionArl" id="descriptionArl" onchange="ValidateSingleInput(this)" name="descriptionArl">*@
+                                    <input type="file" id="files" onchange="ValidateSingleInput(this);" /><br />
+                                    @*<label class="custom-file-label" for="descriptionArl">Choose file</label>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" onclick="addArl();">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form id="formVehicle" class="needs-validation" novalidate method="post">
+    <div class="modal" id="vehicleModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Vehículos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="@(Settings.Theme.IconPrefix) fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="brandVeh">Marca</label>
+                                <input type="text" id="brandVehEdit" name="brandVehEdit" class="form-control" placeholder="Marca">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="plateVeh">Placa</label>
+                                <input type="text" id="plateVehEdit" name="plateVehEdit" class="form-control" placeholder="Placa">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="colourVeh">Color</label>
+                                <input type="text" id="colourVehEdit" name="colourVehEdit" class="form-control" placeholder="Color">
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="detailsVeh">Detalles</label>
+                                <textarea class="form-control" id="detailsVehEdit" name="detailsVehEdit" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" onclick="addVehicle()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form id="formIncidents" class="needs-validation" novalidate method="post">
+    <div class="modal" id="incidentsModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar incidentes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="@(Settings.Theme.IconPrefix) fa-times"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="dateExpInc">Fecha</label>
+                                <input class="form-control" type="date" name="Fecha" value="2023-07-23">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="affairInc">Asunto</label>
+                                <input type="text" name="Asunto" class="form-control" placeholder="Asunto">
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="descriptionInc">Descripción</label>
+                                <textarea class="form-control" name="Descripcion" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" onclick="addIncidents()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section ScriptsBlock {
+    <script src="~/js/datagrid/datatables/datatables.bundle.js"></script>
+    <script src="~/js/notifications/toastr/toastr.js"></script>
+    <script src="~/js/formplugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/js/notifications/sweetalert2/sweetalert2.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
+    <script src="~/js/formplugins/select2/select2.bundle.js"></script>
+
+    <script type="text/javascript" charset="utf-8">
+
+        var visitorsCount = 0;
+        var totalVisitors = 0;
+        var suppliersCount = 0;
+        var contractorsCount = 0;
+        var b64Firma;
+        var port;
+        var wgssSignatureSDK;
+        var SiteId;
+        var b64;
+        layouts.horizontalNavigation('on');
+
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
+
+        function startTime() {
+            var today = new Date();
+            var hr = today.getHours();
+            var min = today.getMinutes();
+            var sec = today.getSeconds();
+            ap = (hr < 12) ? "<span>AM</span>" : "<span>PM</span>";
+            hr = (hr == 0) ? 12 : hr;
+            hr = (hr > 12) ? hr - 12 : hr;
+            //Add a zero in front of numbers<10
+            hr = checkTime(hr);
+            min = checkTime(min);
+            sec = checkTime(sec);
+            document.getElementById("clock").innerHTML = hr + ":" + min + ":" + sec + " " + ap;
+
+            var months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            var days = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
+            var curWeekDay = days[today.getDay()];
+            var curDay = today.getDate();
+            var curMonth = months[today.getMonth()];
+            var curYear = today.getFullYear();
+            var date = curWeekDay + ", " + curDay + " " + curMonth + " " + curYear;
+            document.getElementById("date").innerHTML = date;
+
+            var time = setTimeout(function () { startTime() }, 500);
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+        var pdfDoc = null,
+            canvas = null,
+            ctx = null,
+            pageNum = 1,
+            pageRendering = false,
+            pageNumPending = null,
+            scale = 1.5;
+
+        function renderPage(num) {
+                pageRendering = true;
+
+                pdfDoc.getPage(num).then(function (page) {
+                    let viewport = page.getViewport({ scale: scale });
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    let renderContext = {
+                        canvasContext: ctx,
+                        viewport: viewport
+                    };
+
+                    let renderTask = page.render(renderContext);
+
+                    renderTask.promise.then(function () {
+                        pageRendering = false;
+
+                        if (pageNumPending !== null) {
+                            renderPage(pageNumPending);
+                            pageNumPending = null;
+                        }
+                    });
+                });
+
+                document.getElementById('page_num').textContent = num;
+            }
+
+        function queueRenderPage(num) {
+                if (pageRendering)
+                    pageNumPending = num;
+                else
+                    renderPage(num);
+            }
+
+        function onPrevPage() {
+                if (pageNum <= 1)
+                    return;
+
+                pageNum--;
+                queueRenderPage(pageNum);
+            }
+
+        function onNextPage() {
+                if (pageNum >= pdfDoc.numPages)
+                    return;
+
+                pageNum++;
+                queueRenderPage(pageNum);
+            }
+
+        function showPDF(pdfData) {
+                pageNum = 1;
+                canvas = document.getElementById('canvas-pdf');
+                ctx = canvas.getContext('2d');
+
+                document.getElementById('prev').addEventListener('click', onPrevPage);
+                document.getElementById('next').addEventListener('click', onNextPage);
+
+                //const pdfData = atob(pdfTextEncodedInBase64);
+                const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+
+                loadingTask.promise.then(function (pdf) {
+                    pdfDoc = pdf;
+                    document.getElementById('page_count').textContent = pdfDoc.numPages;
+
+                    renderPage(pageNum);
+                }, function (reason) {
+                    console.error(reason);
+                });
+            }
+
+        function demo1() {
+            jsPDF.init();
+            jsPDF.addPage();
+            jsPDF.text(20, 20, 'Hello world!');
+            jsPDF.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
+            // Making Data URI
+            var out = jsPDF.output();
+            var url = 'data:application/pdf;base64,' + Base64.encode(out);
+            document.location.href = url;
+        }
+
+        var _validFileExtensions = [".pdf"];
+
+        function ValidateSingleInput(oInput) {
+            if (oInput.type == "file") {
+                var sFileName = oInput.value;
+                if (sFileName.length > 0) {
+                    var blnValid = false;
+                    for (var j = 0; j < _validFileExtensions.length; j++) {
+                        var sCurExtension = _validFileExtensions[j];
+                        if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                            blnValid = true;
+                            break;
+                        }
+                    }
+                    if (!blnValid) {
+                        alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+                        oInput.value = "";
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        port = '8000';
+        wgssSignatureSDK = new WacomGSS_SignatureSDK(onDetectRunning, port);
+
+        var timeout = setTimeout(timedDetect, 1500);
+
+        function onDetectRunning() {
+            clearTimeout(timeout);
+        }
+
+        function timedDetect() {
+            if (!wgssSignatureSDK) return;
+
+            if (wgssSignatureSDK.running) {
+                //TODO
+                Command: toastr["success"]("Se detectó el servicio SigCaptX", "Exitoso!")
+
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "showDuration": 3000,
+                    "hideDuration": 1000,
+                    "timeOut": 10000,
+                    "extendedTimeOut": 10000,
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            else {
+                if (wgssSignatureSDK.service_detected) {
+                    //TODO
+                    Command: toastr["warning"]("Se detectó el servicio SigCaptX, pero no el servidor", "warning")
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "showDuration": 3000,
+                        "hideDuration": 1000,
+                        "timeOut": 10000,
+                        "extendedTimeOut": 10000,
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                }
+                else {
+                    //TODO
+                    console.log("SigCaptX service not detected");
+                    Command: toastr["error"]("Servicio SigCaptX no detectado", "error")
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "showDuration": 3000,
+                        "hideDuration": 1000,
+                        "timeOut": 10000,
+                        "extendedTimeOut": 10000,
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                }
+            }
+        }
+
+        function Initialize() {
+            if (!wgssSignatureSDK) {
+                wgssSignatureSDK = new WacomGSS_SignatureSDK(onDetectRunning, port);
+            }
+
+            wizardEventController.start_stop(3);
+        }
+
+        function Test() {
+            var data = $("#txtDisplay").val();
+            alert(data);
+        }
+
+        (function () {
+
+        var width = 320; // We will scale the photo width to this
+        var height = 0; // This will be computed based on the input stream
+        var streaming = false;
+        var video = null;
+        var canvas = null;
+        var photo = null;
+        var startbutton = null;
+        var nueva = null;
+
+        function startup() {
+                video = document.getElementById('video');
+                canvas = document.getElementById('canvas');
+                photo = document.getElementById('photo');
+                startbutton = document.getElementById('startbutton');
+                nueva = document.getElementById('nueva');
+
+                navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false
+                })
+                    .then(function (stream) {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .catch(function (err) {
+                        console.log("An error occurred: " + err);
+                    });
+
+                video.addEventListener('canplay', function (ev) {
+                    if (!streaming) {
+                        height = video.videoHeight / (video.videoWidth / width);
+
+                        if (isNaN(height)) {
+                            height = width / (4 / 3);
+                        }
+
+                        video.setAttribute('width', width);
+                        video.setAttribute('height', height);
+                        canvas.setAttribute('width', width);
+                        canvas.setAttribute('height', height);
+                        streaming = true;
+                    }
+                }, false);
+
+                startbutton.addEventListener('click', function (ev) {
+                    takepicture();
+                    ev.preventDefault();
+                    document.getElementById("camera").style.display = "none";
+                    document.getElementById("startbutton").style.display = "none";
+                }, false);
+
+                nueva.addEventListener('click', function (ev) {
+                    document.getElementById("camera").style.display = "inline";
+                    document.getElementById("startbutton").style.display = "inline";
+                }, false);
+
+                clearphoto();
+            }
+
+        function clearphoto() {
+                var context = canvas.getContext('2d');
+                context.fillStyle = "#AAA";
+                context.fillRect(0, 0, canvas.width, canvas.height);
+
+                var data = canvas.toDataURL('image/png');
+                photo.setAttribute('src', data);
+            }
+
+        function takepicture() {
+                var context = canvas.getContext('2d');
+                if (width && height) {
+                    canvas.width = width;
+                    canvas.height = height;
+                    context.drawImage(video, 0, 0, width, height);
+
+                    var data = canvas.toDataURL('image/png');
+                    photo.setAttribute('src', data);
+                } else {
+                    clearphoto();
+                }
+            }
+
+        window.addEventListener('load', startup, false);
+        })();
+
+        function editVisitidor() {
+            var selectedRows = leftGridOptions.api.getSelectedRows();
+            document.getElementById("nombresVisitante").value = selectedRows.length === 1 ? selectedRows[0].Nombres : '';
+            document.getElementById("lastNamesVisitor").value = selectedRows.length === 1 ? selectedRows[0].Apellidos : '';
+            document.getElementById("companyVisitor").value = selectedRows.length === 1 ? selectedRows[0].Empresa : '';
+            document.getElementById("TipoDoc").value = selectedRows.length === 1 ? selectedRows[0].TipoDoc : '';
+            document.getElementById("idVisitor").value = selectedRows.length === 1 ? selectedRows[0].Identificacion : '';
+            document.getElementById("emailVisitor").value = document.getElementById("email").innerText;
+            document.getElementById("detailVisitor").value = document.getElementById("detalleVis").innerText;
+            document.getElementById("professionVisitor").value = document.getElementById("profesionVis").innerText;
+            document.getElementById("rhVisitor").value = document.getElementById("rhh").innerText;
+            document.getElementById("dateExpeditionVisitor").value = document.getElementById("fExpedicionDoc").innerText;
+            document.getElementById("photo").setAttribute('src', document.getElementById("fotoVis").src);
+            document.getElementById("firma").setAttribute('src', document.getElementById("firmaVis").src);
+            var accessVis = selectedRows.length === 1 ? selectedRows[0].EstadoAcceso : '';
+            if (accessVis) {
+                document.getElementById("estadoAcceso").value = "Dentro";
+            } else {
+                document.getElementById("estadoAcceso").value = "Fuera";
+            }
+        }
+
+        function limpiarFormulario() {
+            document.getElementById("addVisitorForm").reset();
+            document.getElementById("photo").src = '';
+        }
+
+        function addVisitor() {
+            var elements = document.getElementById("addVisitorForm").elements;
+            var obj = {};
+            for (var i = 0; i < elements.length; i++) {
+                var item = elements.item(i);
+                obj[item.name] = item.value;
+            }
+            var stateAccess = document.getElementById("estadoAcceso").value;
+            if (stateAccess == "Dentro") {
+                obj['EstadoAcceso'] = true;
+            } else {
+                obj['EstadoAcceso'] = false;
+            }
+            var photoVis = document.getElementById('photo').src.split(',')[1];
+            obj['Foto'] = photoVis;
+
+            if (document.getElementById('firmaImg')) {
+                var firmaViss = document.getElementById('firmaImg').src.split(',')[1];
+            }
+            obj['Firma'] = firmaViss;
+
+            const file = document.querySelector('#arlPdf').files[0];
+
+            $.ajax({
+                url: 'Visitantes/AddVisitor',
+                data: { jsonobtj: JSON.stringify(obj) },
+                type: "POST",
+                success: function (data) {
+                    if (data == true) {
+                        totastSucces();
+                        location.reload();
+                    } else {
+                        toastEror();
+                        location.reload();
+                    }
+                },
+                error: function (data) {
+                    toastEror();
+                }
+            });
+            }
+
+        function addIncidents() {
+            var selectedRows = leftGridOptions.api.getSelectedRows();
+            var IdVisi = selectedRows.length === 1 ? selectedRows[0].Id : '';
+            var elements = document.getElementById("formIncidents").elements;
+            var obj = {};
+            obj['IdVisitante'] = IdVisi;
+            for (var i = 0; i < elements.length; i++) {
+                var item = elements.item(i);
+                obj[item.name] = item.value;
+            }
+
+            $.ajax({
+                url: 'Visitantes/AddIncident',
+                data: { jsonobtj: JSON.stringify(obj) },
+                type: "POST",
+                success: function (data) {
+                    debugger;
+                    if (data == true) {
+                        totastSucces();
+                        location.reload();
+                    } else {
+                        toastEror();
+                        location.reload();
+                    }
+                },
+                error: function (data) {
+                    toastEror();
+                }
+            });
+        }
+
+        function addDevices() {
+            var selectedRows = leftGridOptions.api.getSelectedRows();
+            var IdVisi = selectedRows.length === 1 ? selectedRows[0].Id : '';
+            var elements = document.getElementById("formDevices").elements;
+            var obj = {};
+            obj['IdVisitante'] = IdVisi;
+            for (var i = 0; i < elements.length; i++) {
+                var item = elements.item(i);
+                obj[item.name] = item.value;
+            }
+
+            $.ajax({
+                url: 'Visitantes/AddDevices',
+                data: { jsonobtj: JSON.stringify(obj) },
+                type: "POST",
+                success: function (data) {
+                    debugger;
+                    if (data == true) {
+                        totastSucces();
+                        location.reload();
+                    } else {
+                        toastEror();
+                        location.reload();
+                    }
+                },
+                error: function (data) {
+                    toastEror();
+                }
+            });
+        }
+
+        function addVehicle() {
+            var selectedRows = leftGridOptions.api.getSelectedRows();
+            var IdVisi = selectedRows.length === 1 ? selectedRows[0].Id : '';
+            var elements = document.getElementById("formVehicle").elements;
+            var obj = {};
+            obj['IdVisitante'] = IdVisi;
+            for (var i = 0; i < elements.length; i++) {
+                var item = elements.item(i);
+                obj[item.name] = item.value;
+            }
+
+            $.ajax({
+                url: 'Visitantes/AddVehicle',
+                data: { jsonobtj: JSON.stringify(obj) },
+                type: "POST",
+                success: function (data) {
+                    debugger;
+                    if (data == true) {
+                        totastSucces();
+                        location.reload();
+                    } else {
+                        toastEror();
+                        location.reload();
+                    }
+                },
+                error: function (data) {
+                    toastEror();
+                }
+            });
+        }
+
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            document.getElementById('files').addEventListener('change', handleFileSelect, false);
+        } else {
+            alert('The File APIs are not fully supported in this browser.');
+        }
+
+        function handleFileSelect(evt) {
+            var f = evt.target.files[0]; // FileList object
+            var reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function (theFile) {
+                return function (e) {
+                    var binaryData = e.target.result;
+                    //Converting Binary Data to base 64
+                    var base64String = window.btoa(binaryData);
+                    //showing file converted to base64
+                    b64 = base64String;
+                };
+            })(f);
+            // Read in the image file as a data URL.
+            reader.readAsBinaryString(f);
+        }
+
+        function addArl() {
+            debugger;
+            var selectedRows = leftGridOptions.api.getSelectedRows();
+            var IdVisi = selectedRows.length === 1 ? selectedRows[0].Id : '';
+            var elements = document.getElementById("formArl").elements;
+            var obj = {};
+            obj['IdVisitante'] = IdVisi;
+            for (var i = 0; i < elements.length; i++) {
+                var item = elements.item(i);
+                obj[item.name] = item.value;
+            }
+            debugger;
+            obj.ArlPdf = b64;
+                $.ajax({
+                    url: 'Visitantes/AddArl',
+                    data: { jsonobtj: JSON.stringify(obj) },
+                    type: "POST",
+                    success: function (data) {
+                        debugger;
+                        if (data == true) {
+                            totastSucces();
+                        } else {
+                            toastEror();
+                        }
+                    },
+                    error: function (data) {
+                        toastEror();
+                    }
+                });
+        }
+
+        function addSecurity() {
+            var selectedRows = leftGridOptions.api.getSelectedRows();
+            let ide = selectedRows.length === 1 ? selectedRows[0].Identificacion : '';
+            let name = selectedRows.length === 1 ? selectedRows[0].Nombres : '';
+            let lastName = selectedRows.length === 1 ? selectedRows[0].Apellidos : '';
+            let id = selectedRows.length === 1 ? selectedRows[0].Id : '';
+            window.location.href = 'SecurityExpert/Index?Ide='+ ide + '&names='+ name +'&lastName=' + lastName + '&id=' + id;
+        }
+
+        var leftColumnDefs = [
+            { headerName: "Identificación", field: "Identificacion" },
+            { headerName: "Nombres", field: "Nombres" },
+            { headerName: "Apellidos", field: "Apellidos" },
+            { headerName: "Tipo Doc.", field: "TipoDoc" },
+            { headerName: "Tipo Visitante", field: "TipoVisitante" },
+            { headerName: "Empresa", field: "Empresa" },
+            {
+                headerName: "Estado Acceso",
+                field: "EstadoAcceso",
+                suppressMenu: true,
+                sortable: true,
+                cellRenderer: function (params) {
+                    if (params.data.EstadoAcceso == 0) {
+                        return '<div class="col-xl-4"><div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" id=""><label class="custom-control-label" for=""></label>';
+                    } else {
+                        return '<div class="col-xl-4"><div class="custom-control custom-switch"><input type="checkbox" checked="" class="custom-control-input" id=""><label class="custom-control-label" for=""></label>';
+                    }
+                }
+            }
+        ];
+
+        var leftColumnDefsCont = [
+            { headerName: "Identificación", field: "Identificacion" },
+            { headerName: "Nombres", field: "Nombres" },
+            { headerName: "Apellidos", field: "Apellidos" },
+            { headerName: "Empresa", field: "Empresa" }
+        ];
+
+        var leftColumnDefsProv = [
+            { headerName: "Identificación", field: "Identificacion" },
+            { headerName: "Nombres", field: "Nombres" },
+            { headerName: "Apellidos", field: "Apellidos" },
+            { headerName: "Empresa", field: "Empresa" },
+        ];
+
+        var leftColumnDefsVis = [
+            { headerName: "Identificación", field: "Identificacion" },
+            { headerName: "Nombres", field: "Nombres" },
+            { headerName: "Apellidos", field: "Apellidos" },
+            { headerName: "Empresa", field: "Empresa" }
+        ];
+
+        var leftColumnsDefsEquipos = [
+            { headerName: "Marca", field: "marca"},
+            {headerName: "Serial", field: "serial"},
+            { headerName: "Color", field: "color" },
+            { headerName: "Modelo", field: "modelo" },
+            { headerName: "Detalle", field: "detalle" }
+        ];
+
+        var leftColumnsDefsArl = [
+            { headerName: "Fecha Expiración", field: "fechaExpiracion" },
+            { headerName: "Detalle", field: "detalle" },
+            {
+                headerName: "Documento",
+                suppressMenu: true,
+                cellRenderer: function (params) {
+                    if (params.node.data.documento) {
+                        var button = document.createElement('i');
+
+                        button.addEventListener('click', function () {
+
+                            var archivo = params.node.data.documento.split("/")[1].split(";")[0];
+                            if (archivo == "pdf") {
+                                var base64 = params.node.data.documento.replace("data:application/pdf;base64,", "");
+                                showPDF(atob(base64));
+                                $("#mdlPreview").modal('show');
+                            }
+                        });
+                        button.classList.add('fa');
+                        button.classList.add('fa-eye');
+                        button.style.cursor = 'pointer';
+                        return button;
+                    }
+                }
+            }
+        ];
+
+        var leftColumnsDefsVehiculos = [
+            { headerName: "Marca", field: "marca" },
+            { headerName: "Placa", field: "placa" },
+            { headerName: "Color", field: "color" },
+            { headerName: "Detalle", field: "detalle" }
+        ];
+
+        var leftGridOptionsIncidentes = {
+            columnDefs: [
+                { headerName: "Asunto", field: "asunto" },
+                { headerName: "Fecha Inc.", field: "fecha", cellEditor: 'datePicker' },
+                { headerName: "Descripción", field: "descripcion" }
+            ],
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                editable: true,
+            },
+            localeText: AG_GRID_LOCALE_EN,
+            editType: 'fullRow',
+            onCellValueChanged: onCellValueChanged,
+            onRowValueChanged: onRowValueChanged,
+            components: {
+                datePicker: getDatePicker(),
+            }
+        };
+
+        function getDatePicker() {
+            // function to act as a class
+            function Datepicker() { }
+
+            // gets called once before the renderer is used
+            Datepicker.prototype.init = function (params) {
+                // create the cell
+                this.eInput = document.createElement('input');
+                this.eInput.value = params.value;
+                this.eInput.classList.add('ag-input');
+                this.eInput.style.height = '100%';
+
+                // https://jqueryui.com/datepicker/
+                $(this.eInput).datepicker({
+                    dateFormat: 'dd/mm/yy',
+                    defaultDate: Date.now,
+                });
+            };
+
+            // gets called once when grid ready to insert the element
+            Datepicker.prototype.getGui = function () {
+                return this.eInput;
+            };
+
+            // focus and select can be done after the gui is attached
+            Datepicker.prototype.afterGuiAttached = function () {
+                this.eInput.focus();
+                this.eInput.select();
+            };
+
+            // returns the new value after editing
+            Datepicker.prototype.getValue = function () {
+                return this.eInput.value;
+            };
+
+            // any cleanup we need to be done here
+            Datepicker.prototype.destroy = function () {
+                // but this example is simple, no cleanup, we could
+                // even leave this method out as it's optional
+            };
+
+            // if true, then this editor will appear in a popup
+            Datepicker.prototype.isPopup = function () {
+                // and we could leave this method out also, false is the default
+                return false;
+            };
+
+            return Datepicker;
+        }
+
+        function onCellValueChanged(event) {
+            console.log(
+                'onCellValueChanged: ' + event.colDef.field + ' = ' + event.newValue
+            );
+        }
+
+        function onRowValueChanged(event) {
+            var data = event.data;
+            console.log(
+                'onRowValueChanged: (' +
+                data.asunto +
+                ', ' +
+                data.fecha +
+                ', ' +
+                data.descripcion +
+                ', ' +
+                data.id
+                +
+                ')'
+            );
+        }
+
+        var leftGridOptionsEquipos = {
+            columnDefs: leftColumnsDefsEquipos,
+            suppressDragLeaveHidesColumns: true,
+            suppressMakeColumnVisibleAfterUnGroup: true,
+            rowGroupPanelShow: 'always',
+            debug: false,
+            rowSelection: 'single',
+            rowGroupPanelShow: 'always',
+            pivotPanelShow: 'always',
+            enableRangeSelection: true,
+            enableMultiRowDragging: true,
+            getRowNodeId: function (data) { return data.Id; },
+            rowDragManaged: true,
+            suppressMoveWhenRowDragging: true,
+            columnDefs: leftColumnsDefsEquipos,
+            animateRows: true,
+            pagination: true,
+            paginationPageSize: 10,
+            localeText: AG_GRID_LOCALE_EN
+        };
+
+        var leftGridOptionArl = {
+            rowSelection: 'single',
+            columnDefs: leftColumnsDefsArl,
+            localeText: AG_GRID_LOCALE_EN
+            };
+
+        var leftGridOptionsVehiculos = {
+            columnDefs: leftColumnsDefsVehiculos,
+            suppressDragLeaveHidesColumns: true,
+            suppressMakeColumnVisibleAfterUnGroup: true,
+            rowGroupPanelShow: 'always',
+            debug: false,
+            rowSelection: 'single',
+            rowGroupPanelShow: 'always',
+            pivotPanelShow: 'always',
+            enableRangeSelection: true,
+            enableMultiRowDragging: true,
+            getRowNodeId: function (data) { return data.Id; },
+            rowDragManaged: true,
+            suppressMoveWhenRowDragging: true,
+            columnDefs: leftColumnsDefsVehiculos,
+            animateRows: true,
+            pagination: true,
+            paginationPageSize: 10,
+            localeText: AG_GRID_LOCALE_EN
+        };
+
+        var AG_GRID_LOCALE_EN = {
+            // Set Filter
+            selectAll: '(Seleccionar todo)',
+            selectAllSearchResults: '(Seleccionar todos los resultados de la búsqueda)',
+            searchOoo: 'Buscar...',
+            blanks: '(Espacios en blanco)',
+            noMatches: 'No hay coincidencias',
+
+            // Number Filter & Text Filter
+            filterOoo: 'Filter...',
+            equals: 'Equals',
+            notEqual: 'Not equal',
+            empty: 'Choose One',
+
+            // Number Filter
+            lessThan: 'Less than',
+            greaterThan: 'Greater than',
+            lessThanOrEqual: 'Less than or equal',
+            greaterThanOrEqual: 'Greater than or equal',
+            inRange: 'In range',
+            inRangeStart: 'to',
+            inRangeEnd: 'from',
+
+            // Text Filter
+            contains: 'Contiene',
+            notContains: 'Not contains',
+            startsWith: 'Starts with',
+            endsWith: 'Ends with',
+
+            // Date Filter
+            dateFormatOoo: 'yyyy-mm-dd',
+
+            // Filter Conditions
+            andCondition: 'Y',
+            orCondition: 'O',
+
+            // Filter Buttons
+            applyFilter: 'Apply',
+            resetFilter: 'Reset',
+            clearFilter: 'Clear',
+            cancelFilter: 'Cancel',
+
+            // Filter Titles
+            textFilter: 'Text Filter',
+            numberFilter: 'Number Filter',
+            dateFilter: 'Date Filter',
+            setFilter: 'Set Filter',
+
+            // Side Bar
+            columns: 'Columns',
+            filters: 'Filters',
+
+            // columns tool panel
+            pivotMode: 'Pivot Mode',
+            groups: 'Row Groups',
+            rowGroupColumnsEmptyMessage: 'Arrastre aquí para establecer grupos de filas',
+            values: 'Values',
+            valueColumnsEmptyMessage: 'Drag here to aggregate',
+            pivots: 'Column Labels',
+            pivotColumnsEmptyMessage: 'Drag here to set column labels',
+
+            // Header of the Default Group Column
+            group: 'Grupo',
+
+            // Other
+            loadingOoo: 'Loading...',
+            noRowsToShow: 'No hay datos para mostrar',
+            enabled: 'Enabled',
+
+            // Menu
+            pinColumn: 'Pin Column',
+            pinLeft: 'Pin Left',
+            pinRight: 'Pin Right',
+            noPin: 'No Pin',
+            valueAggregation: 'Value Aggregation',
+            autosizeThiscolumn: 'Ajustar tamaño de esta columna',
+            autosizeAllColumns: 'Ajustar tamaño de todas las columnas',
+            groupBy: 'Agrupar por',
+            ungroupBy: 'Desagrupar por',
+            resetColumns: 'Restablecer columnas',
+            expandAll: 'Expand All',
+            collapseAll: 'Close All',
+            copy: 'Copiar',
+            ctrlC: 'Ctrl+C',
+            copyWithHeaders: 'Copiar con encabezado',
+            paste: 'Paste',
+            ctrlV: 'Ctrl+V',
+            export: 'Exportar',
+            csvExport: 'CSV Exportar',
+            excelExport: 'Excel Export (.xlsx)',
+            excelXmlExport: 'Excel Export (.xml)',
+
+            // Enterprise Menu Aggregation and Status Bar
+            sum: 'Sum',
+            min: 'Min',
+            max: 'Max',
+            none: 'None',
+            count: 'Count',
+            avg: 'Average',
+            filteredRows: 'Filtered',
+            selectedRows: 'Selected',
+            totalRows: 'Total Rows',
+            totalAndFilteredRows: 'Rows',
+            more: 'More',
+            to: 'to',
+            of: 'of',
+            page: 'Page',
+            nextPage: 'Next Page',
+            lastPage: 'Last Page',
+            firstPage: 'First Page',
+            previousPage: 'Previous Page',
+
+            // Enterprise Menu (Charts)
+            pivotChartAndPivotMode: 'Pivot Chart & Pivot Mode',
+            pivotChart: 'Pivot Chart',
+            chartRange: 'Chart Range',
+
+            columnChart: 'Column',
+            groupedColumn: 'Grouped',
+            stackedColumn: 'Stacked',
+            normalizedColumn: '100% Stacked',
+
+            barChart: 'Bar',
+            groupedBar: 'Grouped',
+            stackedBar: 'Stacked',
+            normalizedBar: '100% Stacked',
+
+            pieChart: 'Pie',
+            pie: 'Pie',
+            doughnut: 'Doughnut',
+
+            line: 'Line',
+
+            xyChart: 'X Y (Scatter)',
+            scatter: 'Scatter',
+            bubble: 'Bubble',
+
+            areaChart: 'Area',
+            area: 'Area',
+            stackedArea: 'Stacked',
+            normalizedArea: '100% Stacked',
+
+            histogramChart: 'Histogram',
+
+            // Charts
+            pivotChartTitle: 'Pivot Chart',
+            rangeChartTitle: 'Range Chart',
+            settings: 'Settings',
+            data: 'Data',
+            format: 'Format',
+            categories: 'Categories',
+            defaultCategory: '(None)',
+            series: 'Series',
+            xyValues: 'X Y Values',
+            paired: 'Paired Mode',
+            axis: 'Axis',
+            navigator: 'Navigator',
+            color: 'Color',
+            thickness: 'Thickness',
+            xType: 'X Type',
+            automatic: 'Automatic',
+            category: 'Category',
+            number: 'Number',
+            time: 'Time',
+            xRotation: 'X Rotation',
+            yRotation: 'Y Rotation',
+            ticks: 'Ticks',
+            width: 'Width',
+            height: 'Height',
+            length: 'Length',
+            padding: 'Padding',
+            spacing: 'Spacing',
+            chart: 'Chart',
+            title: 'Title',
+            titlePlaceholder: 'Chart title - double click to edit',
+            background: 'Background',
+            font: 'Font',
+            top: 'Top',
+            right: 'Right',
+            bottom: 'Bottom',
+            left: 'Left',
+            labels: 'Labels',
+            size: 'Size',
+            minSize: 'Minimum Size',
+            maxSize: 'Maximum Size',
+            legend: 'Legend',
+            position: 'Position',
+            markerSize: 'Marker Size',
+            markerStroke: 'Marker Stroke',
+            markerPadding: 'Marker Padding',
+            itemSpacing: 'Item Spacing',
+            itemPaddingX: 'Item Padding X',
+            itemPaddingY: 'Item Padding Y',
+            layoutHorizontalSpacing: 'Horizontal Spacing',
+            layoutVerticalSpacing: 'Vertical Spacing',
+            strokeWidth: 'Stroke Width',
+            offset: 'Offset',
+            offsets: 'Offsets',
+            tooltips: 'Tooltips',
+            callout: 'Callout',
+            markers: 'Markers',
+            shadow: 'Shadow',
+            blur: 'Blur',
+            xOffset: 'X Offset',
+            yOffset: 'Y Offset',
+            lineWidth: 'Line Width',
+            normal: 'Normal',
+            bold: 'Bold',
+            italic: 'Italic',
+            boldItalic: 'Bold Italic',
+            predefined: 'Predefined',
+            fillOpacity: 'Fill Opacity',
+            strokeOpacity: 'Line Opacity',
+            histogramBinCount: 'Bin count',
+            columnGroup: 'Column',
+            barGroup: 'Bar',
+            pieGroup: 'Pie',
+            lineGroup: 'Line',
+            scatterGroup: 'X Y (Scatter)',
+            areaGroup: 'Area',
+            histogramGroup: 'Histogram',
+            groupedColumnTooltip: 'Grouped',
+            stackedColumnTooltip: 'Stacked',
+            normalizedColumnTooltip: '100% Stacked',
+            groupedBarTooltip: 'Grouped',
+            stackedBarTooltip: 'Stacked',
+            normalizedBarTooltip: '100% Stacked',
+            pieTooltip: 'Pie',
+            doughnutTooltip: 'Doughnut',
+            lineTooltip: 'Line',
+            groupedAreaTooltip: 'Area',
+            stackedAreaTooltip: 'Stacked',
+            normalizedAreaTooltip: '100% Stacked',
+            scatterTooltip: 'Scatter',
+            bubbleTooltip: 'Bubble',
+            histogramTooltip: 'Histogram',
+            noDataToChart: 'No data available to be charted.',
+            pivotChartRequiresPivotMode: 'Pivot Chart requires Pivot Mode enabled.'
+        }
+
+        var leftGridOptions = {
+            columnDefs: leftColumnDefs,
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                filter: true
+            },
+            autoGroupColumnDef: {
+                minWidth: 200,
+            },
+            suppressDragLeaveHidesColumns: true,
+            suppressMakeColumnVisibleAfterUnGroup: true,
+            rowGroupPanelShow: 'always',
+            debug: false,
+            rowSelection: 'single',
+            rowGroupPanelShow: 'always',
+            pivotPanelShow: 'always',
+            enableRangeSelection: true,
+            enableMultiRowDragging: true,
+            getRowNodeId: function (data) { return data.Id; },
+            rowDragManaged: true,
+            suppressMoveWhenRowDragging: true,
+            columnDefs: leftColumnDefs,
+            animateRows: true,
+            pagination: true,
+            paginationPageSize: 10,
+            localeText: AG_GRID_LOCALE_EN,
+            onSelectionChanged: onSelectionChanged
+        };
+
+        var leftGridOptionsCont = {
+            columnDefs: leftColumnDefsCont,
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                filter: true
+            },
+            autoGroupColumnDef: {
+                minWidth: 200,
+            },
+            pagination: true,
+            paginationPageSize: 10,
+            localeText: AG_GRID_LOCALE_EN
+        };
+
+        var leftGridOptionsProv = {
+            columnDefs: leftColumnDefsProv,
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                filter: true
+            },
+            autoGroupColumnDef: {
+                minWidth: 200,
+            },
+            pagination: true,
+            paginationPageSize: 10,
+            localeText: AG_GRID_LOCALE_EN
+        };
+
+        var leftGridOptionsVis = {
+            columnDefs: leftColumnDefsVis,
+            defaultColDef: {
+                flex: 1,
+                minWidth: 100,
+                filter: true
+            },
+            autoGroupColumnDef: {
+                minWidth: 200,
+            },
+            animateRows: true,
+            pagination: true,
+            paginationPageSize: 10,
+            localeText: AG_GRID_LOCALE_EN,
+        };
+
+        function onQuickFilterChanged() {
+            leftGridOptions.api.setQuickFilter(document.getElementById('quickFilter').value);
+        }
+
+        function eliminar() {
+            var swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: "btn btn-danger mr-2"
+                },
+                buttonsStyling: false
+            });
+            swalWithBootstrapButtons
+                .fire({
+                    title: "Está seguro?",
+                    text: "No podrá revertir esto!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí, Eliminar!",
+                    cancelButtonText: "No, Cancelar!",
+                    reverseButtons: true
+                })
+                .then(function (result) {
+                    if (result.value) {
+                        var selectedRows = leftGridOptions.api.getSelectedRows();
+                        var IdVisi = selectedRows.length === 1 ? selectedRows[0].Id : '';
+                        $.ajax({
+                            url: 'Visitantes/DeleteInfo',
+                            data: { jsonobtj: JSON.stringify(IdVisi) },
+                            type: "POST",
+                            success: function (data) {
+                                debugger;
+                                if (data == true) {
+                                    swalWithBootstrapButtons.fire(
+                                        "Eliminado!",
+                                        "El registro fué eliminado.",
+                                        "success"
+                                    );
+                                    alertSuccess();
+                                    totastSucces();
+                                    location.reload();
+                                } else {
+                                    toastEror();
+                                    location.reload();
+                                }
+                            },
+                            error: function (data) {
+
+                            }
+                        });
+
+                    } else if (
+                        // Read more about handling dismissals
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                            "Cancelado",
+                            "El registro sigue a salvo :)",
+                            "error"
+                        );
+                    }
+                });
+        }
+
+        function totastSucces() {
+            Command: toastr["success"]("Hecho con exito!", "Exitoso")
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "showDuration": 3000,
+                "hideDuration": 1000,
+                "timeOut": 10000,
+                "extendedTimeOut": 10000,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+
+        function toastEror() {
+            Command: toastr["error"]("Opss!!, algo salió mal, por favor intente de nuevo", "Error")
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "showDuration": 3000,
+                "hideDuration": 1000,
+                "timeOut": 10000,
+                "extendedTimeOut": 10000,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+
+        function accessState(data) {
+            alertSuccess();
+            var obj = {};
+                obj['State'] = data;
+            var selectedRows = leftGridOptions.api.getSelectedRows();
+            var IdVisi = selectedRows.length === 1 ? selectedRows[0].Id : '';
+            let ide = selectedRows.length === 1 ? selectedRows[0].Identificacion : '';
+            obj['UserId'] = IdVisi;
+            obj['Id'] = ide;
+            $.ajax({
+                url: 'Visitantes/AccessState',
+                data: { jsonobtj: JSON.stringify(obj) },
+                type: "POST",
+                success: function (data) {
+                    if (data == true) {
+                        totastSucces();
+                        location.reload();
+                    } else {
+                        toastEror();
+                        location.reload();
+                    }
+                },
+                error: function (data) {
+
+                }
+            });
+        }
+
+        function onSelectionIncChange() {
+            var selectedRows = leftGridOptions.api.getSelectedRows();
+        }
+
+        function saveIncEdit() {
+            debugger;
+            const node = this.printNode;
+            if (true) {
+
+            }
+        }
+
+        function onSelectionChanged() {
+            alertSuccess();
+            document.getElementById("deleteEvent").disabled = false;
+            document.getElementById("addSe").disabled = false;
+            document.getElementById("editVissi").disabled = false;
+            var selectedRows = leftGridOptions.api.getSelectedRows();
+            var IdVisi = selectedRows.length === 1 ? selectedRows[0].Id : '';
+            $.ajax({
+                url: 'Visitantes/GetInfo',
+                data: { jsonobtj: JSON.stringify(IdVisi) },
+                type: "POST",
+                success: function (data) {
+                    if (data.id > 0) {
+                        var x = document.getElementById("DivVis");
+                        if (x.style.display === "none") {
+                            x.style.display = "block";
+                        }
+                        var Incidentes = data.incidentes;
+                        var Equipos = data.equipos;
+                        var Vehiculos = data.vehiculos;
+                        var Arl = data.arl;
+                        loadGridIncidentes(leftGridOptionsIncidentes, 'Left', Incidentes);
+                        loadGridEquipos(leftGridOptionsEquipos, 'Left', Equipos);
+                        loadGridVehiculos(leftGridOptionsVehiculos, 'Left', Vehiculos);
+                        loadGridArl(leftGridOptionArl, 'Left', Arl);
+                        document.getElementById("js-contacts").style.display = "inline";
+                        document.getElementById("names").innerHTML = data.nombres + ' ' + data.apellidos;
+                        document.getElementById("company").innerHTML = data.empresa;
+                        document.getElementById("profesionVis").innerHTML = data.profesion;
+                        document.getElementById("idV").innerHTML = data.identificacion;
+                        document.getElementById("typeDoco").innerHTML = data.tipoDoc;
+                        document.getElementById("typeVi").innerHTML = data.tipoVisitante;
+                        document.getElementById("rhh").innerHTML = data.rh;
+                        document.getElementById("gen").innerHTML = data.genero;
+                        document.getElementById("email").innerHTML = data.correo;
+                        document.getElementById("fExpedicionDoc").innerHTML = data.fExpedicionDoc;
+                        document.getElementById("empleadoRespon").innerHTML = data.idEmpleadoResponsable;
+                        document.getElementById("detalleVis").innerHTML = data.detalle;
+                        document.getElementById("fotoVis").setAttribute('src','data:image/png;base64,' + data.foto + '');
+                        document.getElementById("avatarImg").setAttribute('src','data:image/png;base64,' + data.foto + '');
+                        document.getElementById("firmaVis").setAttribute('src','data:image/png;base64,' + data.firma + '');
+                        document.getElementById("imgage").setAttribute('src','data:image/png;base64,' + data.foto + '');
+                        } else {
+
+                        }
+                },
+                error: function (data) {
+
+                }
+            });
+        }
+
+        function loadGridIncidentes(options, side, data) {
+            var gridIncidentes = document.querySelector('#gridIncidentes');
+
+            if (options && options.api) {
+                options.api.destroy();
+            }
+            options.rowData = data;
+            new agGrid.Grid(gridIncidentes, options);
+        }
+
+        function loadGridEquipos(options, side, data) {
+            var gridEquipos = document.querySelector('#gridEquipos');
+
+            if (options && options.api) {
+                options.api.destroy();
+            }
+
+            options.rowData = data;
+            new agGrid.Grid(gridEquipos, options);
+            }
+
+        function loadGridArl(options, side, data) {
+            var gridArl = document.querySelector('#gridArl');
+
+            if (options && options.api) {
+                options.api.destroy();
+            }
+
+            options.rowData = data;
+            new agGrid.Grid(gridArl, options);
+        }
+
+        function loadGridVehiculos(options, side, data) {
+            var gridVehiculos = document.querySelector('#gridVehiculos');
+
+            if (options && options.api) {
+                options.api.destroy();
+            }
+
+            options.rowData = data;
+            new agGrid.Grid(gridVehiculos, options);
+        }
+
+        function loadGrid(options, side, data) {
+            var grid = document.querySelector('#myGrid');
+
+            if (options && options.api) {
+                options.api.destroy();
+            }
+            options.rowData = data;
+            new agGrid.Grid(grid, options);
+        }
+
+        function loadGridVis(options, side, data) {
+            var grid = document.querySelector('#gridVisEnter');
+
+            if (options && options.api) {
+                options.api.destroy();
+            }
+            options.rowData = data;
+            new agGrid.Grid(grid, options);
+        }
+
+        function loadGridCont(options, side, data) {
+            var grid = document.querySelector('#gridContEnter');
+
+            if (options && options.api) {
+                options.api.destroy();
+            }
+            options.rowData = data;
+            new agGrid.Grid(grid, options);
+        }
+
+        function loadGridProv(options, side, data) {
+            var grid = document.querySelector('#gridProvEnter');
+
+            if (options && options.api) {
+                options.api.destroy();
+            }
+            options.rowData = data;
+            new agGrid.Grid(grid, options);
+        }
+
+        var ListaVisitors = @Html.Raw(JsonConvert.SerializeObject(Model));
+        var ListaVis = @Html.Raw(JsonConvert.SerializeObject(Model.Where(s => s.EstadoAcceso == true && s.TipoVisitante == "VISITANTE")));
+        var ListaCont = @Html.Raw(JsonConvert.SerializeObject(Model.Where(s => s.EstadoAcceso == true && s.TipoVisitante == "CONTRATISTA")));
+        var ListaProv = @Html.Raw(JsonConvert.SerializeObject(Model.Where(s => s.EstadoAcceso == true && s.TipoVisitante == "PROVEEDOR")));
+
+        function loadGrids() {
+            loadGrid(leftGridOptions, 'Left', ListaVisitors);
+            loadGridVis(leftGridOptionsVis, 'Left', ListaVis);
+            loadGridCont(leftGridOptionsCont, 'Left', ListaCont);
+            loadGridProv(leftGridOptionsProv, 'Left', ListaProv);
+            ListaVisitors.forEach(function (valor, indice, array) {
+
+                var countVis = 0;
+                for (var i = 0; i < array.length; ++i) {
+                    if (array[i].TipoVisitante == "VISITANTE" && array[i].EstadoAcceso == 1)
+                        countVis++;
+                }
+
+                var countProv = 0;
+                for (var i = 0; i < array.length; ++i) {
+                    if (array[i].TipoVisitante == "PROVEEDOR" && array[i].EstadoAcceso == 1)
+                        countProv++;
+                }
+
+                var countCont = 0;
+                for (var i = 0; i < array.length; ++i) {
+                    if (array[i].TipoVisitante == "CONTRATISTA" && array[i].EstadoAcceso == 1)
+                        countCont++;
+                }
+
+                if (countVis != 0 || countProv != 0 || countCont != 0) {
+                    document.getElementById("countVisitors").innerHTML = countVis;
+                    document.getElementById("countProviders").innerHTML = countProv;
+                    document.getElementById("countContratist").innerHTML = countCont;
+                    document.getElementById("countTotal").innerHTML = countVis + countProv + countCont;
+                }
+                else {
+                    document.getElementById("countVisitors").innerHTML = 0;
+                    document.getElementById("countProviders").innerHTML = 0;
+                    document.getElementById("countContratist").innerHTML = 0;
+                    document.getElementById("countTotal").innerHTML = countVis + countProv + countCont;
+                }
+
+            });
+        }
+
+        var controls = {
+			leftArrow: '<i class="@(Settings.Theme.IconPrefix) fa-angle-left" style="font-size: 1.25rem"></i>',
+			rightArrow: '<i class="@(Settings.Theme.IconPrefix) fa-angle-right" style="font-size: 1.25rem"></i>'
+		}
+
+        var runDatePicker = function () {
+            // range picker
+            $('#datepicker-5').datepicker({
+                todayHighlight: true,
+                templates: controls
+            });
+        }
+
+        function alertSuccess() {
+            var dialog = bootbox.dialog({
+                message: '<p class="text-center mb-0"><i class="fa fa-spin fa-cog"></i> Cargando, un momento por favor...</p>',
+                centerVertical: true,
+                closeButton: false
+            });
+            // do something in the background
+            dialog.init(function () {
+                setTimeout(function () {
+                    dialog.modal('hide');
+                }, 2000);
+            });
+        }
+
+        $(document).ready(function () {
+            runDatePicker();
+            loadGrids();
+            startTime();
+            $("body").attr("onload", "wizardEventController.body_onload()");
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById('dateExpeditionVisitor').defaultValue = today ;
+            $.getJSON("variables/WacomVariables.json", function (datos) {
+                localStorage.setItem("WACOMVARIABLES", JSON.stringify(datos));
+            });
+
+            $('input[type=radio][name=contactview]').change(function () {
+                if (this.value == 'grid') {
+                    $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-g');
+                    $('#js-contacts .col-xl-12').removeClassPrefix('col-xl-').addClass('col-xl-4');
+                    $('#js-contacts .js-expand-btn').addClass('d-none');
+                    $('#js-contacts .card-body + .card-body').addClass('show');
+                } else if (this.value == 'table') {
+                    $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-1');
+                    $('#js-contacts .col-xl-4').removeClassPrefix('col-xl-').addClass('col-xl-12');
+                    $('#js-contacts .js-expand-btn').removeClass('d-none');
+                    $('#js-contacts .card-body + .card-body').removeClass('show');
+                }
+            });
+        });
+
+        $('#defaultIndeterminate').prop('indeterminate', true)
+
+        var toggleCheckbox = function () {
+            $('#js-checkbox-toggle').toggleText('Change to CIRCLE', 'Change back to default');
+            $('.frame-wrap .custom-checkbox').toggleClass('custom-checkbox-circle');
+        }
+
+        var toggleRadio = function () {
+            $('#js-radio-toggle').toggleText('Change to ROUNDED', 'Change back to default');
+            $('.frame-wrap .custom-radio').toggleClass('custom-radio-rounded');
+        }
+
+        function capture() {
+            if (!wgssSignatureSDK.running || null == dynCapt) {
+                print("Session error. Restarting the session.");
+                actionWhenRestarted(window.Capture);   // See SigCaptX-SessionControl.js
+                return;
+            }
+            dynCapt.Capture(sigCtl, "John Smith", "Document Approval", null, null, onDynCaptCapture);
+        }
+
+        function onDynCaptCapture(dynCaptV, SigObjV, status) {
+                b64Firma = SigObjV;
+                if (wgssSignatureSDK.ResponseStatus.INVALID_SESSION == status) {
+                    print("Error: invalid session. Restarting the session.");
+                    actionWhenRestarted(window.Capture);  // See SigCaptX-SessionControl.js
+                }
+                else {
+                    /* Check the status returned from the signature capture */
+                    switch (status) {
+                        case wgssSignatureSDK.DynamicCaptureResult.DynCaptOK:
+                            sigObj = SigObjV;
+                            print("Signature captured successfully");
+
+                            /* Set the RenderBitmap flags as appropriate depending on whether the user wants to use a picture image or B64 text value */
+                            if (document.getElementById("chkUseB64Image").checked) {
+                                var flags = wgssSignatureSDK.RBFlags.RenderOutputBase64 | wgssSignatureSDK.RBFlags.RenderColor32BPP;
+                            }
+                            else {
+                                var flags = wgssSignatureSDK.RBFlags.RenderOutputPicture | wgssSignatureSDK.RBFlags.RenderColor32BPP;
+                            }
+                            sigObj.RenderBitmap("bmp", imageBox.clientWidth, imageBox.clientHeight, 0.7, 0x00000000, 0x00FFFFFF, flags, 4, 4, onRenderBitmap);
+                            break;
+
+                        case wgssSignatureSDK.DynamicCaptureResult.DynCaptCancel:
+                            print("Signature capture cancelled");
+                            break;
+
+                        case wgssSignatureSDK.DynamicCaptureResult.DynCaptPadError:
+                            print("No capture service available");
+                            break;
+
+                        case wgssSignatureSDK.DynamicCaptureResult.DynCaptError:
+                            print("Tablet Error");
+                            break;
+
+                        case wgssSignatureSDK.DynamicCaptureResult.DynCaptNotLicensed:
+                            print("No valid Signature Capture licence found");
+                            break;
+
+                        default:
+                            print("Capture Error " + status);
+                            break;
+                    }
+                }
+            }
+
+        function onRenderBitmap(sigObjV, bmpObj, status) {
+                if (wgssSignatureSDK.ResponseStatus.OK == status) {
+                    var imageBox = document.getElementById("imageBox");
+                    var useB64Image = document.getElementById("chkUseB64Image").checked;
+
+                    /* If the user wants to demonstrate the use of B64 image strings then define an image and set its source to the B64 string*/
+                    if (useB64Image) {
+                        print("base64_image:>" + bmpObj + "<");
+                        img = new Image();
+                        img.src = "data:image/png;base64," + bmpObj;
+                        b64Firma = bmpObj;
+                        img.id = "firmaImg";
+
+                        if (null == imageBox.firstChild) {
+                            imageBox.appendChild(img);
+                        }
+                        else {
+                            imageBox.replaceChild(img, imageBox.firstChild);
+                        }
+                    }
+                    else {
+                        /* If RenderBitmap generated a standard image (picture) then just place that picture in the img control on the HTML form */
+                        if (null == imageBox.firstChild) {
+                            imageBox.appendChild(bmpObj.image);
+                        }
+                        else {
+                            imageBox.replaceChild(bmpObj.image, imageBox.firstChild);
+                        }
+                    }
+                    /* If the user chose the option to show the SigText value on the form then call the function to do this */
+                    if (document.getElementById("chkShowSigText").checked) {
+                        sigObjV.GetSigText(onGetSigText);
+                    }
+                }
+                else {
+                    print("Signature Render Bitmap error: " + status);
+                }
+            }
+    </script>
+}
